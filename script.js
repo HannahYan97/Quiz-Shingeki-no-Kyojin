@@ -1,91 +1,91 @@
 const perguntas = [
   {
-    pergunta: "Qual é a finalidade do comando 'console.log()' em JavaScript?",
+    pergunta: "Qual é o nome do protagonista principal da Obra ?",
     respostas: [
-      "Exibir uma mensagem de erro",
-      "Imprimir dados no console",
-      "Criar uma variável"
+      "Mikasa Ackerman",
+      "Eren Jaeger",
+      "Armin Arlert"
     ],
     correta: 1
   },
   {
-    pergunta: "Qual é a função do operador '===' em comparações em JavaScript?",
+    pergunta: "Quais os nomes das 3 Muralhas que existem na Obra ?",
     respostas: [
-      "Comparação de valores sem considerar o tipo",
-      "Atribuição de valores",
-      "Comparação estrita de valores e tipos"
+      "Sina, Rose e Shiganshina",
+      "Trost, Shiganshina e Maria",
+      "Sina, Rose e Maria"
     ],
     correta: 2
   },
   {
-    pergunta: "Como se declara uma variável em JavaScript?",
+    pergunta: "Quem é o portador do Titã Bestial ?",
     respostas: [
-      "let myVar;",
-      "const myVar = 10;",
-      "ambas as opções acima estão corretas"
+      "Reiner Braun",
+      "Bertolt Hoover",
+      "Zeke"
     ],
     correta: 2
   },
   {
-    pergunta: "O que é uma função em JavaScript?",
+    pergunta: "Quem é o criador da história de Attack on Titan ?",
     respostas: [
-      "Um tipo de dado",
-      "Um bloco de código reutilizável",
-      "Uma variável global"
+      "Haruichi Furudate",
+      "Hajime Isayama",
+      "Togashi Yoshiro"
     ],
     correta: 1
   },
   {
-    pergunta: "Qual é a diferença entre 'let' e 'const' na declaração de variáveis?",
+    pergunta: "Em qual local do corpo é preciso atingir para matar um titã ou deixar ele incapacitado ?",
     respostas: [
-      "Nenhuma, são sinônimos",
-      "let é usado para valores constantes, const para variáveis",
-      "let permite reatribuição, const cria variáveis imutáveis"
+      "Nas Pernas",
+      "No Coração",
+      "Na Nuca"
     ],
     correta: 2
   },
   {
-    pergunta: "O que é o DOM em JavaScript?",
+    pergunta: "Quais são as Tropas Militares que existem na Obra ?",
     respostas: [
-      "Um método de criptografia",
-      "Um modelo de objeto para manipular documentos HTML",
-      "Uma linguagem de programação"
+      "Exploração, Segurança e Estacionária",
+      "Reconhecimento ou Exploração, Guarnição e Estacionária",
+      "Identificação, Exploração e Segurança"
     ],
     correta: 1
   },
   {
-    pergunta: "Como se realiza uma iteração sobre os elementos de um array em JavaScript?",
+    pergunta: "Qual é o nome do Titã que destruiu a muralha Maria, abrindo caminho para a invasão dos Titãs ?",
     respostas: [
-      "Usando a estrutura 'if-else'",
-      "Com a declaração 'switch'",
-      "Utilizando loops como 'for' ou 'forEach'"
+      "Titã Blindado",
+      "Titã Fêmea",
+      "Titã Colossal"
     ],
     correta: 2
   },
   {
-    pergunta: "O que é o JSON em JavaScript?",
+    pergunta: "Quem é a portadora da Titã Fêmea ?",
     respostas: [
-      "Um método de formatação de texto",
-      "Uma linguagem de estilização",
-      "Um formato de dados leve e intercambiável"
+      "Hange Zoë",
+      "Historia Reiss",
+      "Annie Leonhart"
     ],
     correta: 2
   },
   {
-    pergunta: "Qual é a diferença entre 'null' e 'undefined' em JavaScript?",
+    pergunta: "Quem foi o primeiro líder da Tropa da Exploração/Reconhecimento ?",
     respostas: [
-      "São iguais, usados de forma intercambiável",
-      "'null' representa a ausência de valor, 'undefined' é atribuído explicitamente",
-      "Ambos representam valores vazios"
+      "Armin Arlet",
+      "Erwin Smith",
+      "Hange Zoë"
     ],
     correta: 1
   },
   {
-    pergunta: "Como se adiciona um evento a um elemento HTML usando JavaScript?",
+    pergunta: "Quem é o portador do Titã Cart ?",
     respostas: [
-      "Apenas com CSS",
-      "Usando o atributo 'event'",
-      "Através do método 'addEventListener'"
+      "Ymir",
+      "Sasha Blouse",
+      "Pieck Finger"
     ],
     correta: 2
   },
@@ -94,23 +94,36 @@ const perguntas = [
 const quiz = document.querySelector('#quiz')
 const template = document.querySelector('template')
 
+const corretas = new Set()
+const totalDePerguntas = perguntas.length
+const mostrarTotal = document.querySelector('#acertos span')
+mostrarTotal.textContent = corretas.size + ' de ' + totalDePerguntas
 
 // loop ou laço de repetição
-for(const item of perguntas) {
+for (const item of perguntas) {
   const quizItem = template.content.cloneNode(true)
   quizItem.querySelector('h3').textContent = item.pergunta
-  
-  for(let resposta of item.respostas) {
+
+  for (let resposta of item.respostas) {
     const dt = quizItem.querySelector('dl dt').cloneNode(true)
     dt.querySelector('span').textContent = resposta
+    dt.querySelector('input').setAttribute('name', 'pergunta-' + perguntas.indexOf(item))
+    dt.querySelector('input').value = item.respostas.indexOf(resposta)
+    dt.querySelector('input').onchange = (event) => {
 
+      const estaCorreta = event.target.value == item.correta
+
+      corretas.delete(item)
+      if (estaCorreta) {
+        corretas.add(item)
+      }
+
+      mostrarTotal.textContent = corretas.size + ' de ' + totalDePerguntas
+    }
     quizItem.querySelector('dl').appendChild(dt)
   }
 
-  
   quizItem.querySelector('dl dt').remove()
-  
-  
-  // coloca a pergunta na tela
+
   quiz.appendChild(quizItem)
 }
